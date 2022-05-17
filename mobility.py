@@ -63,6 +63,7 @@ class Mobility:
         SW = permeability.Permeability.SwiZ(rock, depth)                 
     
         # extract values and uncertainties
+        # is an error somewhere here...
         Sw = SW[2].n                            # Sw value as float
         Swuc = SW[2].s                          # Sw uncertainty as float
     
