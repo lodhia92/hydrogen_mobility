@@ -6,7 +6,3 @@ Fluid mobility calculation using the Darcy Flow equation.
 
 Required modules:
 pip install chemicals, thermo, numpy, pandas, uncertainties
-
-To test installation, run:
-
-<add example here>
