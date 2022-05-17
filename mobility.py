@@ -60,10 +60,9 @@ class Mobility:
         # calculate rock permeability using multipoint method (Hantschel 2009)
         kv, kh = permeability.Permeability.k("multipoint", rock, por)      
         # calculate connate water saturation using Holmes (2009)
-        SW = permeability.Permeability.SwiZ(rock, depth)                 
-    
+        SW = permeability.Permeability.SwiZ(rock, depth)
+            
         # extract values and uncertainties
-        # is an error somewhere here...
         Sw = SW[2].n                            # Sw value as float
         Swuc = SW[2].s                          # Sw uncertainty as float
     
@@ -171,5 +170,5 @@ class Mobility:
             return Fluid, rock, EOS, depth, tsurf, phase, p, t, mob_vg.n, mob_vg.s, \
                 mob_hg.n, mob_hg.s, mug, v_G, rhog      
   
-            
+#            
             

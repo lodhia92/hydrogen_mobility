@@ -236,7 +236,7 @@ class Permeability:
         Sw = C/(porosity**Q)
         if Sw > 1:
             Sw = ufloat(1,1)         # set Swi = 1.0 +/-1 for low porosities
-            return depth, porosity, Sw
-        elif porosity > dpor:
-            pass          
+        return depth, porosity, Sw
+#        elif porosity > dpor:
+#            pass          
 ###############################################################################       
