@@ -1,6 +1,5 @@
 # Mobility
 Dr Bhavik Harish Lodhia
-UNSW Sydney
 
 Fluid mobility calculation using the Darcy Flow equation.
 
