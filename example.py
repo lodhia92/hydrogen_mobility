@@ -23,7 +23,7 @@ conglomerate = ["Conglomerate","Conglomerate-quartzite"]
 limestone = ["Limestone-OG","Limestone-WM","Micrite","Limestone-shaley","Limestone-orgrich","Limestone-TOC1-2"]
 carbonates = ["Marl","Dolomite","Dolomite-sandy","Dolomite-silty","Dolomite-org"]
 
-rocks = ["Micrite"]
+rocks = ["Sandstone"]
 # rocks = ["Micrite"]           
 # equations = ["PR78", "SRK", "RK"]
 equations = ["PR78"]
@@ -36,7 +36,7 @@ for tsurf in tsurfs:
         for z in depths:
             for rock in rocks:
                 out = mobility.Mobility.Mobility("H2O", rock, z, tsurf, EOS)
-                print(out)      
+                print(out)
          
 
 
