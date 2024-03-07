@@ -136,18 +136,37 @@ class Mobility:
 
 class Run:
 
-    def run(fluid, rock, depth, tsurf, eos,output,plot):
+    def run(variable, fluid, rock, depth, tsurf, setting, eos,output,plot):
 
         #depths = []
         mobs = []
         rhows = []
         buoys = []
-        vels = []        
+        vels = []
+        dens = []
+        viscs = []        
 
         for z in depth:
     
             mob = Mobility.Mobility(fluid, rock, z, tsurf, eos)
             rhow = Mobility.Mobility("H2O", rock, z, tsurf, eos)
+            density = mob[-1]
+
+            pt = data.Data.PT(setting, z, tsurf)
+            T = pt[1]                               # temperature in kelvin
+            P = pt[2]*1e6                           # *1e6 for pressure in Pa
+
+            name = data.Fluid.Name(fluid)[0]
+            Vc = data.Fluid.Name(fluid)[1]
+            mu = viscosity.Viscosity.Pure(name, eos, Vc, T, P)
+            if mu[2] == 'g':
+                visc = mu[9] 
+            elif mu[2] == 'l':
+                visc = mu[8]
+            elif mu[2] == 'l/g':
+                visc = mu[8] # choose liquid viscosity in case of 'l/g' phase
+            
+            
             
             # correct to ensure liquid density is chosen for  case of l/g phase
             if rhow[5] == 'l/g':
@@ -161,11 +180,13 @@ class Run:
             if output == "on":     
             
                 print(str("------------ Mobility algothm results ------------------------"))
-                print(str("Fluid ="), fluid, str("rock ="), rock)
-                print(str("Mobility ="), mob[8], str("= m^2/PaS at depth ="), z, str("km"))
-                print(str("Water density ="), rhow, str("kg/m^3 at depth ="), z, str("km"))
-                print(str("Fluid density ="), mob[-1], str("kg/m^3 at depth ="), z, str("km"))
-                print(str("Vertical velocity ="), vel, str("m/year"), str("kg/m^3 at depth ="), z, str("km"))
+                print(str("Fluid ="), fluid, str("rock ="), rock, str("at depth ="), z, str("km"))
+                print(str("Mobility ="), mob[8], str("= m^2/PaS"))
+                print(str("Water density ="), rhow, str("kg/m^3"))
+                print(str("Fluid density ="), mob[-1], str("kg/m^3"))
+                print(str("Fluid viscosity = "), visc, str("Pas"))
+                print(str("Buoyancy ="),buoy,str("kg/m^2s^2"))
+                print(str("Vertical velocity ="), vel, str("m/year"), str("kg/m^3"))
                 print(str("---------------------------------------------------------------"))
 
             elif output == "off":
@@ -175,8 +196,12 @@ class Run:
             rhows.append(rhow)
             buoys.append(buoy)
             vels.append(vel)
+            dens.append(density)
+            viscs.append(visc)
 
-        if plot == "on":
+
+
+        if plot == "on" and variable == "vmax":
         
             # Plotting
             plt.figure(figsize=(8, 6))
@@ -194,6 +219,60 @@ class Run:
             plt.grid(True)
 
             plt.show()
+
+        elif plot == "on" and variable == "buoyancy":
+             # Plotting
+            plt.figure(figsize=(8, 6))
+            plt.scatter(buoys, depth)
+            # plot.plot(vels, depth) # plot as line
+
+            plt.ylim(0, max(depth)+ 0.5)  # Depth range from 0 to 4 km
+            plt.xlim(0, max(buoys) + 50)  # X-axis range from 0 to 50 units greater than the largest buoyancy
+            plt.gca().invert_yaxis()
+
+            
+            plt.xlabel('Buoyancy [kg/m^2s^2]')
+            plt.ylabel('Depth [km]')
+            plt.title('Buoyancy vs. Depth')
+            plt.grid(True)
+
+            plt.show()   
+
+        elif plot == "on" and variable == "density":
+             # Plotting
+            plt.figure(figsize=(8, 6))
+            plt.scatter(dens, depth)
+            # plot.plot(vels, depth) # plot as line
+
+            plt.ylim(0, max(depth)+ 0.5)  # Depth range from 0 to 4 km
+            plt.xlim(0, max(dens) + 5)  # X-axis range from 0 to 5 units greater than the largest density
+            plt.gca().invert_yaxis()
+
+            
+            plt.xlabel('Fluid density [kg/m^3]')
+            plt.ylabel('Depth [km]')
+            plt.title('Fluid density vs. Depth')
+            plt.grid(True)
+
+            plt.show()    
+
+        elif plot == "on" and variable == "viscosity":
+             # Plotting
+            plt.figure(figsize=(8, 6))
+            plt.scatter(viscs, depth)
+            # plot.plot(vels, depth) # plot as line
+
+            plt.ylim(0, max(depth)+ 0.5)  # Depth range from 0 to 4 km
+            plt.xlim(0, max(viscs) + 1e-5)  # X-axis range from 0 to 1e-5 units greater than the largest viscosity
+            plt.gca().invert_yaxis()
+
+            
+            plt.xlabel('Fluid viscosity [Pas]')
+            plt.ylabel('Depth [km]')
+            plt.title('Fluid density vs. Depth')
+            plt.grid(True)
+
+            plt.show()                        
 
         elif plot == "off":
             pass
