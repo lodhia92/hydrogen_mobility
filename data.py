@@ -1,6 +1,5 @@
 # Class to set up Mobility module data parameters
-# Bhavik Harish Lodhia UNSW Sydney
-# 17/05/2022
+# Bhavik Harish Lodhia
 
 import pandas as pd  
 from thermo import ChemicalConstantsPackage

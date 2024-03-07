@@ -1,7 +1,6 @@
 # Calculate fluid velocities as a function of rock type, pressure and
 # temperature
 # By Bhavik Harish Lodhia
-# UNSW Sydney
 
 import data
 import permeability

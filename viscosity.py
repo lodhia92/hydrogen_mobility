@@ -1,5 +1,5 @@
 # Calculate viscosity of a chemical mixture using LBC method
-# Bhavik Harish Lodhia 08/06/2021
+# Bhavik Harish Lodhia
 
 from thermo import ChemicalConstantsPackage
 from thermo.eos_mix import PR78MIX, TWUPRMIX, SRKMIX, TWUSRKMIX, APISRKMIX, RKMIX

@@ -1,6 +1,5 @@
 # Module to calculate rock (intrinsic) permeability using measured points method
-# Bhavik Harish Lodhia UNSW Sydney
-# 28/06/21
+# Bhavik Harish Lodhia
 
 import math
 from uncertainties import ufloat
