@@ -15,4 +15,4 @@ References:
 
 Lodhia, B.H., Peeters, L. (2024). The migration of hydrogen in sedimentary basins, Australian Energy Producers Journal, doi:10.1071/EP23176
 Lodhia, B.H., Peeters, L., Frery, E. (2024). A Review of The Migration of Hydrogen from the Planetary to Basin Scale, UNDER REVIEW, Journal of Geophysical Research: Solid Earth.
-Lodhia, B.H., Clark, S.R. (2022). Computation of vertical fluid mobility of CO, methane, hydrogen and hydrocarbons through sandstones and carbonates. Sci Rep 12, 10216. https://doi.org/10.1038/s41598-022-14234-6
+Lodhia, B.H., Clark, S.R. (2022). Computation of vertical fluid mobility of CO2, methane, hydrogen and hydrocarbons through sandstones and carbonates. Sci Rep 12, 10216. https://doi.org/10.1038/s41598-022-14234-6
