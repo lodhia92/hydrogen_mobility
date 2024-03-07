@@ -6,9 +6,9 @@ import pandas as pd
 from thermo import ChemicalConstantsPackage
 from thermo.eos_mix import PR78MIX, TWUPRMIX, SRKMIX, TWUSRKMIX, APISRKMIX, RKMIX
 from thermo.eos_mix import VDWMIX
-from chemicals.viscosity import Lorentz_Bray_Clarke, mu_IAPWS
-from chemicals.iapws import iapws95_rho, iapws97_rho
-from chemicals import Vm_to_rho
+#from chemicals.viscosity import Lorentz_Bray_Clarke, mu_IAPWS
+#from chemicals.iapws import iapws95_rho, iapws97_rho
+#from chemicals import Vm_to_rho
 import numpy as np
   
 ###############################################################################   

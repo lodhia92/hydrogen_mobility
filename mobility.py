@@ -8,47 +8,10 @@ import permeability
 import viscosity
 from uncertainties import ufloat
 from chemicals.iapws import iapws95_rho
+import matplotlib.pyplot as plt
 
 class Mobility:
-
-    def Buoyancy(Fluid, EOS, depth, tsurf):
     
-        name, Vc = data.Data.Name(Fluid)
-    
-        if len(name.MWs) == 1:
-            visc = viscosity.Viscosity.Pure(name, EOS, Vc, T, P)
-            phase = visc[2]
-            p = visc[4]
-            t = visc[5]       
-            mul = visc[8]
-            mug = visc[9]
-            rhol = visc[11]
-            rhog = visc[13]
-        
-        g = 9.08665                             # gravity in m/s^2 
-   
-        # calculate water density at PT
-        rhow = iapws95_rho(T=t, P=p)   
-   
-        if phase == 'l/g':
-            # liquid buoyancy
-            buoy_l = g*(rhow - rhol)
-            # gas buoyancy
-            buoy_g = g*(rhow - rhog)      
-            return Fluid, EOS, tsurf, phase, depth, buoy_l, buoy_g
-               
-        elif phase == 'l':
-            # liquid buoyancy
-            buoy_l = g*(rhow - rhol) 
-            return Fluid, EOS, tsurf, phase, depth, buoy_l
-
-        elif phase == 'g':
-            # gas buoyancy
-            buoy_g = g*(rhow - rhog)    
-            return Fluid, EOS, tsurf, phase, depth, buoy_g
-        
-    
-
     # Calculate fluid mobility as a function of depth
     def Mobility(Fluid, rock, depth, tsurf, EOS):
     
@@ -115,7 +78,9 @@ class Mobility:
         pt = data.Data.PT(3, depth, tsurf)
         T = pt[1]                               # temperature in kelvin
         P = pt[2]*1e6                           # *1e6 for pressure in Pa
-            
+
+        #print(T,P)  
+
             # ViscosityPure changed to include mu_l and mu_g on 27/07/21!
         if len(name.MWs) == 1 and name != "H2O":
             visc = viscosity.Viscosity.Pure(name, EOS, Vc, T, P)
@@ -168,7 +133,68 @@ class Mobility:
             # horizontal velocity
             mob_hg = 1*(ufloat(kheff, kheff_uc)/mug) # -1 omitted    
             return Fluid, rock, EOS, depth, tsurf, phase, p, t, mob_vg.n, mob_vg.s, \
-                mob_hg.n, mob_hg.s, mug, v_G, rhog      
-  
-#            
+                mob_hg.n, mob_hg.s, mug, v_G, rhog        
+
+class Run:
+
+    def run(fluid, rock, depth, tsurf, eos,output,plot):
+
+        #depths = []
+        mobs = []
+        rhows = []
+        buoys = []
+        vels = []        
+
+        for z in depth:
+    
+            mob = Mobility.Mobility(fluid, rock, z, tsurf, eos)
+            rhow = Mobility.Mobility("H2O", rock, z, tsurf, eos)
             
+            # correct to ensure liquid density is chosen for  case of l/g phase
+            if rhow[5] == 'l/g':
+                rhow = rhow[-2]
+            elif rhow[5] != 'l/g':
+                rhow = rhow[-1]
+
+            buoy = 9.08665*(rhow - mob[-1])
+            vel = mob[8]*buoy*3.154e7 # multiply by 3.154e7 s in a year
+
+            if output == "on":     
+            
+                print(str("------------ Mobility algothm results ------------------------"))
+                print(str("Fluid ="), fluid, str("rock ="), rock)
+                print(str("Mobility ="), mob[8], str("= m^2/PaS at depth ="), z, str("km"))
+                print(str("Water density ="), rhow, str("kg/m^3 at depth ="), z, str("km"))
+                print(str("Fluid density ="), mob[-1], str("kg/m^3 at depth ="), z, str("km"))
+                print(str("Vertical velocity ="), vel, str("m/year"), str("kg/m^3 at depth ="), z, str("km"))
+                print(str("---------------------------------------------------------------"))
+
+            elif output == "off":
+                pass
+                
+            mobs.append(mob)
+            rhows.append(rhow)
+            buoys.append(buoy)
+            vels.append(vel)
+
+        if plot == "on":
+        
+            # Plotting
+            plt.figure(figsize=(8, 6))
+            plt.scatter(vels, depth)
+            # plot.plot(vels, depth) # plot as line
+
+            plt.ylim(0, max(depth)+ 0.5)  # Depth range from 0 to 4 km
+            plt.xlim(0, max(vels) + 2)  # X-axis range from 0 to 2 units greater than the largest velocity
+            plt.gca().invert_yaxis()
+
+            
+            plt.xlabel('Vertical Velocity [m/year]')
+            plt.ylabel('Depth [km]')
+            plt.title('Vertical Velocity vs. Depth')
+            plt.grid(True)
+
+            plt.show()
+
+        elif plot == "off":
+            pass

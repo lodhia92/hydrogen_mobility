@@ -35,13 +35,13 @@ for tsurf in tsurfs:
     for EOS in equations:
         for z in depths:
             for rock in rocks:
-                out = mobility.Mobility.Mobility("H2O", rock, z, tsurf, EOS)
+                out = mobility.Mobility.Mobility("H2", rock, z, tsurf, EOS)
                 print(out)
          
 
 
-# for tsurf in tsurfs:   
+#for tsurf in tsurfs:   
 #     for EOS in equations:
 #         for z in depths:
-            # out = mobility.Mobility.Buoyancy("H2", EOS, z, tsurf)
-            # print(out)
+#            out = mobility.Mobility.Buoyancy("H2", EOS, z, tsurf)
+#            print(out)
