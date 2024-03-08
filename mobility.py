@@ -136,7 +136,7 @@ class Mobility:
 
 class Run:
 
-    def run(variable, fluid, rock, depth, tsurf, setting, eos,output,plot,save):
+    def run(fluid, rock, depth, tsurf, setting, eos, output, plot, save):
 
         #depths = []
         mobs = []
@@ -219,7 +219,7 @@ class Run:
             pass
 
 
-        if plot == "on" and variable == "vmax":
+        if output == "on" and plot == "vmax":
         
             # Plotting
             plt.figure(figsize=(8, 6))
@@ -243,7 +243,7 @@ class Run:
             else:
                 pass               
 
-        elif plot == "on" and variable == "mobility":
+        elif output == "on" and plot == "mobility":
              # Plotting
             plt.figure(figsize=(8, 6))
             plt.scatter(mobs, depth)
@@ -267,7 +267,7 @@ class Run:
                 pass   
 
 
-        elif plot == "on" and variable == "buoyancy":
+        elif output == "on" and plot == "buoyancy":
              # Plotting
             plt.figure(figsize=(8, 6))
             plt.scatter(buoys, depth)
@@ -290,7 +290,7 @@ class Run:
             else:
                 pass   
 
-        elif plot == "on" and variable == "density":
+        elif output == "on" and plot == "density":
              # Plotting
             plt.figure(figsize=(8, 6))
             plt.scatter(dens, depth)
@@ -317,7 +317,7 @@ class Run:
             else:
                 pass               
 
-        elif plot == "on" and variable == "viscosity":
+        elif output == "on" and plot == "viscosity":
              # Plotting
             plt.figure(figsize=(8, 6))
             plt.scatter(viscs, depth)
