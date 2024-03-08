@@ -9,9 +9,9 @@ import data as data
 
 class Permeability:
     
-    def k(method, rock, porosity):   
+    def k(rock, porosity):   
         
-        df, athy, compaction = data.Data.Params()    
+        df = data.Data.Params()    
         row = data.Data.Name(rock)    
     
         # Assign variables from dataframe depending on lithology
@@ -24,14 +24,14 @@ class Permeability:
         k2 = df.values[row,7]
     
         # Calculate permeability from linear multipoint function
-        if method == "multipoint" and porosity < phi1:
+        if porosity < phi1:
             x = abs(k1 - k0)/(phi1 - phi0)*porosity + k0
         
-        elif method == "multipoint" and porosity >= phi1 and porosity <= phi2:
+        elif porosity >= phi1 and porosity <= phi2:
             x = (k2 - k1)/(phi2 - phi1)*porosity + \
                 (k2 - (k2 - k1)*(phi2 - phi0)/(phi2 - phi1))
         
-        elif method == "multipoint" and porosity > phi2:
+        elif porosity > phi2:
             x = k2
     
         elif rock == "Sandstone" or rock == "Sandstone-clayrich" or  \
@@ -54,44 +54,22 @@ class Permeability:
             elif phi > 0.1:
                 y = (2*10**14)*0.5*(phi**3/(S0**2 * (1-phi)**2))                
  
-        elif rock == "Shale" or rock == "Shale-sandy" or rock == "Shale-silicious"  \
-            or rock == "Shale-silty" or rock == "Shale-opalCT" or rock == "Shale-black" \
-            or rock == "Shale-orgrich" or rock == "Shale-TOC3" or rock == "Shale-TOC8" \
-            or rock == "Shale-TOC20" and method == "KC":
-            S0 = 10**8
-            phi = porosity - (3.1*10**-10)*S0 
-            if phi <= 0.1:            
-                y = (2*10**16)*0.01*(phi**5/(S0**2 * (1-phi)**2))
-            elif phi > 0.1:
-                y = (2*10**14)*0.01*(phi**3/(S0**2 * (1-phi)**2))
-
-
-        if method == "multipoint":
-
-            khv = 10**x # Calculate permeability in mD
-            kv = khv*1 # vertical permeability = khv * upscaling
-            kh = ak*khv*50 # horizonal permeability = vertical permiability * ak * upscaling
+        khv = 10**x # Calculate permeability in mD
+        kv = khv*1 # vertical permeability = khv * upscaling
+        kh = ak*khv*50 # horizonal permeability = vertical permiability * ak * upscaling
     
-            kv = math.log(kv, 10) # math.log returns log_e unless specified
-            kh = math.log(kh, 10)
-            # print(porosity, kv,kh)
-        
-        elif method == "KC":
-            khv = y
-            kv = khv*1
-            kh = ak*khv
-            kv = math.log(kv, 10) # math.log returns log_e unless specified
-            kh = math.log(kh, 10)
-            # print(porosity, kv,kh)
+        kv = math.log(kv, 10) # math.log returns log_e unless specified
+        kh = math.log(kh, 10)
+        # print(porosity, kv,kh)
     
         return kv, kh # vertical and horizontal permeability in log[mD]    
 
 ###############################################################################    
 
-    def krp(rock, equation, regime, S):
+    def krp(rock, regime, S):
     
         # Relative permeability calculation using quadratic formula from Hantschel
-        # (2009), Ringrose and Corbett (1994) methods
+        # (2009)
     
         if rock == "Sandstone" or "Siltstone" or "Conglomerate" or "Limestone" \
             or "Marl" or "Dolomite":
@@ -104,30 +82,19 @@ class Permeability:
             Sgc = 0.00
             Soc = 1.00/100     
             
-        if equation == "Quadratic" and regime == "WL":        # water-liquid phase
+        if regime == "WL":        # water-liquid phase
             Swe = (S-Swc)/(1 - Swc - Soc)           # normalised water saturation
             krw = 0.4*(Swe)**2                      # water relative permeability
             krow = 1 - 1.8*(Swe) + 0.8*(Swe)**2     # oil-water relative permeability
-            # print(str('Quadratic'), S, str('krw'), krw, str('krow'), krow)
             return S, krw, krow
     
-        elif equation == "Quadratic"  and regime == "VL":    # vapour-liquid phase
+        elif regime == "VL":    # vapour-liquid phase
             Sge = (S-Sgc)/(1 - Swc - Sgc) # normalised gas saturation for krg
             Sgoe = S/(1 - Swc)            # normalised gas-oil saturation for krog
             krg = 0.4*(Sge)**2            # relative gas permeability
             krog = 1 - 1.8*(Sgoe) + 0.8*(Sgoe)**2   # relative oil-gas permeability
-            # print(str('Quadratic'), S, str('krg'), krg, str('krog'), krog)        
+     
             return S, krg, krog
-
-        elif equation == "Ringrose" and regime == "WL":
-            Swe = (S-Swc)/(1 - Swc - Soc)           # normalised water saturation
-            krw = 0.3*Swe**3
-            krow = 0.85*(1 - Swe)**3
-            # print(str('Ringrose'), S, str('krw'), krw, str('krow'), krow)        
-            return S, krw, krow
-
-        elif equation == "Ringrose"  and regime == "VL":
-            print(str('Rongrose and Corbett 1994 method can only be used for water-liquid components'))
     
 ###############################################################################   
     
@@ -227,8 +194,7 @@ class Permeability:
         or rock == "Limestone-TOC1-2" or rock == "Limestone-TOC10" \
         or rock == "Marl" or rock == "Dolomite" or rock == "Dolomite-sandy" \
         or rock == "Dolomite-silty" or rock == "Dolomite-org":
-        
-            # C = ufloat(0.0325,0.0275)
+            
             C = ufloat(0.035,0.025)
 
         # Holmes (2009) equation
@@ -236,6 +202,5 @@ class Permeability:
         if Sw > 1:
             Sw = ufloat(1,1)         # set Swi = 1.0 +/-1 for low porosities
         return depth, porosity, Sw
-#        elif porosity > dpor:
-#            pass          
+     
 ###############################################################################       
