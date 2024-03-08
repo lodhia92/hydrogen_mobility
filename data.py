@@ -175,7 +175,8 @@ class Fluid:
             vc = [0.0642/1000]
         elif fluid == "H2O":
             name = ChemicalConstantsPackage(MWs=[18.015], names=['H2O'], omegas=[0.3449], 
-                                           Pcs=[22.055e6], Tcs=[647.13]) 
+                                           Pcs=[22.055e6], Tcs=[647.13])
+            vc = [0.0560/1000] 
         
         return name, vc
 

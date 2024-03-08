@@ -134,11 +134,11 @@ class Run:
             mobb = mob[8]
 
             pt = data.Data.PT(z, tsurf)
-            T = pt[1]                               # temperature in kelvin
-            P = pt[2]*1e6                           # *1e6 for pressure in Pa
+            T = pt[0]                               # temperature in kelvin
+            P = pt[1]*1e6                           # *1e6 for pressure in Pa
 
-            name = data.Fluid.Name(fluid)[0]
-            Vc = data.Fluid.Name(fluid)[1]
+            name = data.Fluid.Name(fluid="H2")[0]
+            Vc = data.Fluid.Name(fluid="H2")[1]
             mu = viscosity.Viscosity.Pure(name, eos, Vc, T, P)
             if mu[2] == 'g':
                 visc = mu[9] 
@@ -158,17 +158,13 @@ class Run:
             buoy = 9.08665*(rhow - mob[-1])
             vel = mob[8]*buoy*3.154e7 # multiply by 3.154e7 s in a year
                 
-            mobs.append(mobb)
-            rhows.append(rhow)
-            buoys.append(buoy)
             vels.append(vel)
-            dens.append(density)
-            viscs.append(visc)
 
-            dict = {'Depth [km]':depth,'vmax [m/year]':vels}
-            df = pd.DataFrame(dict)
-            print("Mobility algorithm results for H2 and", rock)
-            print(df)
+
+        dict = {'Depth [km]':depth,'vmax [m/year]':vels}
+        df = pd.DataFrame(dict)
+        print("Mobility algorithm results for H2 and", rock)
+        print(df)
 
         if plot == "on":
         

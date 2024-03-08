@@ -1,11 +1,8 @@
 # Calculate viscosity of a chemical mixture using LBC method
 # Bhavik Harish Lodhia
 
-from thermo import ChemicalConstantsPackage
-from thermo.eos_mix import PR78MIX, TWUPRMIX, SRKMIX, TWUSRKMIX, APISRKMIX, RKMIX
-from thermo.eos_mix import VDWMIX
+from thermo.eos_mix import PR78MIX
 from chemicals.viscosity import Lorentz_Bray_Clarke, mu_IAPWS
-from chemicals.iapws import iapws95_rho
 from chemicals import Vm_to_rho
 
 

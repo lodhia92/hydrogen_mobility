@@ -11,7 +11,7 @@ class Permeability:
     
     def k(rock, porosity):   
         
-        df = data.Data.Params()    
+        df, athy, compaction = data.Data.Params()    
         row = data.Data.Name(rock)    
     
         # Assign variables from dataframe depending on lithology
