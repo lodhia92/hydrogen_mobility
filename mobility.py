@@ -6,7 +6,7 @@ import data
 import permeability
 import viscosity
 from uncertainties import ufloat
-from chemicals.iapws import iapws95_rho
+import pandas as pd
 import matplotlib.pyplot as plt
 
 class Mobility:
@@ -136,7 +136,7 @@ class Mobility:
 
 class Run:
 
-    def run(variable, fluid, rock, depth, tsurf, setting, eos,output,plot):
+    def run(variable, fluid, rock, depth, tsurf, setting, eos,output,plot,save):
 
         #depths = []
         mobs = []
@@ -151,6 +151,7 @@ class Run:
             mob = Mobility.Mobility(fluid, rock, z, tsurf, eos)
             rhow = Mobility.Mobility("H2O", rock, z, tsurf, eos)
             density = mob[-1]
+            mobb = mob[8]
 
             pt = data.Data.PT(setting, z, tsurf)
             T = pt[1]                               # temperature in kelvin
@@ -177,28 +178,45 @@ class Run:
             buoy = 9.08665*(rhow - mob[-1])
             vel = mob[8]*buoy*3.154e7 # multiply by 3.154e7 s in a year
 
-            if output == "on":     
+            #if output == "on":     
             
-                print(str("------------ Mobility algothm results ------------------------"))
-                print(str("Fluid ="), fluid, str("rock ="), rock, str("at depth ="), z, str("km"))
-                print(str("Mobility ="), mob[8], str("= m^2/PaS"))
-                print(str("Water density ="), rhow, str("kg/m^3"))
-                print(str("Fluid density ="), mob[-1], str("kg/m^3"))
-                print(str("Fluid viscosity = "), visc, str("Pas"))
-                print(str("Buoyancy ="),buoy,str("kg/m^2s^2"))
-                print(str("Vertical velocity ="), vel, str("m/year"), str("kg/m^3"))
-                print(str("---------------------------------------------------------------"))
-
-            elif output == "off":
-                pass
+                #print(str("------------ Mobility algothm results ------------------------"))
+                #print(str("Fluid ="), fluid, str("rock ="), rock, str("at depth ="), z, str("km"))
+                #print(str("Mobility ="), mob[8], str("= m^2/PaS"))
+                #print(str("Water density ="), rhow, str("kg/m^3"))
+                #print(str("Fluid density ="), mob[-1], str("kg/m^3"))
+                #print(str("Fluid viscosity = "), visc, str("Pas"))
+                #print(str("Buoyancy ="),buoy,str("kg/m^2s^2"))
+                #print(str("Vertical velocity ="), vel, str("m/year"), str("kg/m^3"))
+                #print(str("---------------------------------------------------------------"))
                 
-            mobs.append(mob)
+            mobs.append(mobb)
             rhows.append(rhow)
             buoys.append(buoy)
             vels.append(vel)
             dens.append(density)
             viscs.append(visc)
 
+        # Multiply viscosity by 10e5 for display
+
+        viscss = [x * 10e5 for x in viscs] 
+
+        if output == "on":
+            dict = {'Depth [km]':depth,'Density [km/m^3]':dens, 'Buoyancy [kg/m^2s^s]':buoys, 'Viscosity [x10^-5 Pas]':viscss,'vmax [m/year]':vels}
+            #print(dict)
+            #dict = {'Depth':depth}
+            df = pd.DataFrame(dict)
+            print("Mobility algorithm results for", fluid, "and", rock)
+            print(df)
+
+            if save == "true":
+                df.to_csv('output.csv', index=False)
+
+            elif save == "false":
+                pass
+
+        elif output == "off":
+            pass
 
 
         if plot == "on" and variable == "vmax":
@@ -220,6 +238,35 @@ class Run:
 
             plt.show()
 
+            if save == "true":
+                plt.savefig('output.png')
+            else:
+                pass               
+
+        elif plot == "on" and variable == "mobility":
+             # Plotting
+            plt.figure(figsize=(8, 6))
+            plt.scatter(mobs, depth)
+            # plot.plot(vels, depth) # plot as line
+
+            plt.ylim(0, max(depth)+ 0.5)  # Depth range from 0 to 4 km
+            plt.xlim(0, max(mobs) + 1e-13)  # X-axis range from 0 to 1e-5 units greater than the largest viscosity
+            plt.gca().invert_yaxis()
+
+            
+            plt.xlabel('Fluid mobility [m^2/Pas]')
+            plt.ylabel('Depth [km]')
+            plt.title('Fluid mobility vs. Depth')
+            plt.grid(True)
+
+            plt.show() 
+
+            if save == "true":
+                plt.savefig('output.png')
+            else:
+                pass   
+
+
         elif plot == "on" and variable == "buoyancy":
              # Plotting
             plt.figure(figsize=(8, 6))
@@ -238,6 +285,11 @@ class Run:
 
             plt.show()   
 
+            if save == "true":
+                plt.savefig('output.png')
+            else:
+                pass   
+
         elif plot == "on" and variable == "density":
              # Plotting
             plt.figure(figsize=(8, 6))
@@ -248,6 +300,10 @@ class Run:
             plt.xlim(0, max(dens) + 5)  # X-axis range from 0 to 5 units greater than the largest density
             plt.gca().invert_yaxis()
 
+            if save == "true":
+                plt.savefig('output.png')
+            else:
+                pass   
             
             plt.xlabel('Fluid density [kg/m^3]')
             plt.ylabel('Depth [km]')
@@ -255,6 +311,11 @@ class Run:
             plt.grid(True)
 
             plt.show()    
+
+            if save == "true":
+                plt.savefig('output.png')
+            else:
+                pass               
 
         elif plot == "on" and variable == "viscosity":
              # Plotting
@@ -272,7 +333,12 @@ class Run:
             plt.title('Fluid density vs. Depth')
             plt.grid(True)
 
-            plt.show()                        
+            plt.show()           
+
+            if save == "true":
+                plt.savefig('output.png')
+            else:
+                pass             
 
         elif plot == "off":
             pass
