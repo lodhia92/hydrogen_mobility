@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "hydrogen_mobility"
+version: "1.0.0"
+date-released: 2023-04-18
+
+authors:
+  - family-names: "Lodhia"
+    given-names: "Bhavik Harish"
+    orcid: "https://orcid.org/0000-0002-3764-2248"
+    affiliation: "CSIRO"
+
+repository-code: "https://github.com/lodhia92/hydrogen_mobility"
+
