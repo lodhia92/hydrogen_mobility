@@ -1,4 +1,4 @@
-# Mobility
+# hydrogen_mobility
 Dr Bhavik Harish Lodhia
 March 2024
 
@@ -10,6 +10,9 @@ fluids is currently under development.
 
 Required modules:
 pip install chemicals thermo pandas uncertainties matplotlib
+
+Please cite use of this software as follows:
+Lodhia, B.H. (2024) hydrogen_mobility, https://github.com/lodhia92/hydrogen_mobility, doi:10.5281/zenodo.10990921.
 
 References:
 
