@@ -4,8 +4,8 @@ March 2024
 
 Fluid mobility calculation using the Darcy Flow equation.
 This module calculates density, buoyancy, viscosity and maximum vertical velocity
-for user-defined fluids in various rock types using the method of Lodhia & Clark (2022).
-Currently, only pure fluids are supported. The addition of mixed or multi-component
+for hydrogen in various rock types using the method of Lodhia & Clark (2022).
+Currently, only pure fluids are supported. The addition of other, mixed or multi-component
 fluids is currently under development.
 
 Required modules:
