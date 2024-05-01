@@ -177,51 +177,17 @@ class Fluid:
 
     def Name(fluid):    
 
-        if fluid == "methane":
-            name = ChemicalConstantsPackage(MWs=[16.043], names=['methane'],
-                                               omegas=[0.0115], Pcs=[4.599e6], Tcs=[190.25])            
-            vc = [0.0986/1000]
-        elif fluid == "CO2":
-            name = ChemicalConstantsPackage(MWs=[44.010], names=['CO2'], omegas=[0.2276], 
-                                           Pcs=[7.382e6], Tcs=[304.19])
-            vc = [0.0940/1000]
-        elif fluid == "H2":
+        if fluid == "H2":
             name = ChemicalConstantsPackage(MWs=[2.016], names=['H2'], omegas=[-0.2150], 
                                           Pcs=[1.313e6], Tcs=[33.18])            
-            vc = [0.0642/1000]
+            Vc = [0.0642/1000]
+
         elif fluid == "H2O":
             name = ChemicalConstantsPackage(MWs=[18.015], names=['H2O'], omegas=[0.3449], 
                                            Pcs=[22.055e6], Tcs=[647.13]) 
-            vc = [0.0560/1000]
-        elif fluid == "drygas":
-            name = ChemicalConstantsPackage(MWs=[17.943], names=['dry_gas'], 
-                                              omegas=[0.0221], Pcs=[4.850e6], Tcs=[197.42])            
-            vc = [0.0977/1000]
-        elif fluid == "wetgas":
-            name = ChemicalConstantsPackage(MWs=[30.186], names=['wet_gas'], 
-                                              omegas=[0.0624], Pcs=[4.801e6], Tcs=[272.40])            
-            vc = [0.1345/1000] 
-        elif fluid == "voil":
-            name = ChemicalConstantsPackage(MWs=[53.135], names=['voloil'],
-                                                   omegas=[0.1267],Pcs=[4.373e6], Tcs=[367.79])            
-            vc = [0.1956/1000]
-        elif fluid == "lightoil":
-            name = ChemicalConstantsPackage(MWs=[48.439], names=['lightoil'],
-                                                omegas=[0.1238],Pcs=[4.389e6], Tcs=[357.38])            
-            vc = [0.1895/1000]
-        elif fluid == "blackoil":
-            name = ChemicalConstantsPackage(MWs=[90.072], names=['blackoil'],
-                                                omegas=[0.2423],Pcs=[3.535e6], Tcs=[491.62])            
-            vc = [0.3121/1000]
-        elif fluid == "mediumoil":
-            name = ChemicalConstantsPackage(MWs=[101.141], names=['mediumoil'],
-                                                   omegas=[0.2606],Pcs=[3.459e6], Tcs=[511.92])     
-            vc = [0.3302/1000]
-        elif fluid == "heavyoil":
-            name = ChemicalConstantsPackage(MWs=[127.492], names=['heavyoil'],
-                                                omegas=[0.3290],Pcs=[3.041e6], Tcs=[568.42])       
-            vc = [0.4080/1000]
-        return name, vc
+            Vc = [0.0560/1000]
+
+        return name, Vc
 
 
 
