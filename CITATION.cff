@@ -3,6 +3,7 @@ message: "If you use this software, please cite it as below."
 title: "hydrogen_mobility"
 version: "1.0.0"
 date-released: 2023-04-18
+doi: "10.5281/zenodo.10990921"
 
 authors:
   - family-names: "Lodhia"
