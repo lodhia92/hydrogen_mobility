@@ -8,6 +8,9 @@ for hydrogen in various rock types using the method of Lodhia & Clark (2022).
 Currently, only pure fluids are supported. The addition of other, mixed or multi-component
 fluids is currently under development.
 
+To calculate hydrogen fluid properties, please use the command: python run.py
+Please see the detailed comments in run.py for information on how hydrogen fluid properties for different rock types and conditions may be calculated and plotting options.
+
 Required modules:
 pip install chemicals thermo pandas uncertainties matplotlib
 
